@@ -1,6 +1,9 @@
 /*-------------------------------------------------------------------- 
  * JQuery Plugin: "EqualHeights" & "EqualWidths"
  * by:	Scott Jehl, Todd Parker, Maggie Costello Wachs (http://www.filamentgroup.com)
+ * modified by: Mathew Winstone <mwinstone@coldfrontlabs.ca>
+ *
+ * Drop in replacement for equalHeights but allows you set the child elements to compare heights. Defaults to immediate children
  *
  * Copyright (c) 2007 Filament Group
  * Licensed under GPL (http://www.opensource.org/licenses/gpl-license.php)
@@ -17,12 +20,18 @@
  *  07.24.2008 v 2.0 - added support for widths
 --------------------------------------------------------------------*/
 
-$.fn.equalHeights = function(px) {
+$.fn.equalHeights = function(px,selector) {
 	$(this).each(function(){
 		var currentTallest = 0;
-		$(this).children().each(function(i){
-			if ($(this).height() > currentTallest) { currentTallest = $(this).height(); }
-		});
+		if (!selector) {
+  		$(this).children().each(function(i){
+  			if ($(this).height() > currentTallest) { currentTallest = $(this).height(); }
+  		});		  
+		} else {
+  		$(this).find(selector).each(function(i){
+  			if ($(this).height() > currentTallest) { currentTallest = $(this).height(); }
+  		});		  		  
+		}
     if (!px && Number.prototype.pxToEm) currentTallest = currentTallest.pxToEm(); //use ems unless px is specified
 		// for ie6, set height since min-height isn't supported
 		if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'height': currentTallest}); }
@@ -32,12 +41,18 @@ $.fn.equalHeights = function(px) {
 };
 
 // just in case you need it...
-$.fn.equalWidths = function(px) {
+$.fn.equalWidths = function(px,selector) {
 	$(this).each(function(){
 		var currentWidest = 0;
-		$(this).children().each(function(i){
-				if($(this).width() > currentWidest) { currentWidest = $(this).width(); }
-		});
+		if (!selector) {
+  		$(this).children().each(function(i){
+  				if($(this).width() > currentWidest) { currentWidest = $(this).width(); }
+  		});		  
+		} else {
+  		$(this).find(selector).each(function(i){
+  				if($(this).width() > currentWidest) { currentWidest = $(this).width(); }
+  		});
+		}
 		if(!px && Number.prototype.pxToEm) currentWidest = currentWidest.pxToEm(); //use ems unless px is specified
 		// for ie6, set width since min-width isn't supported
 		if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'width': currentWidest}); }

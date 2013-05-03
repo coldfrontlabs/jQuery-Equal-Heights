@@ -19,7 +19,7 @@
  *  08.02.2007 initial Version 1.0
  *  07.24.2008 v 2.0 - added support for widths
 --------------------------------------------------------------------*/
-
+(function ($) {
 $.fn.equalHeights = function(px,selector) {
 	$(this).each(function(){
 		var currentTallest = 0;
@@ -35,7 +35,11 @@ $.fn.equalHeights = function(px,selector) {
     if (!px && Number.prototype.pxToEm) currentTallest = currentTallest.pxToEm(); //use ems unless px is specified
 		// for ie6, set height since min-height isn't supported
 		if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'height': currentTallest}); }
-		$(this).children().css({'min-height': currentTallest}); 
+		if (!selector) {
+  		$(this).children().css({'min-height': currentTallest});       
+		} else {
+  		$(this).find(selector).css({'min-height': currentTallest}); 
+		}
 	});
 	return this;
 };
@@ -56,7 +60,12 @@ $.fn.equalWidths = function(px,selector) {
 		if(!px && Number.prototype.pxToEm) currentWidest = currentWidest.pxToEm(); //use ems unless px is specified
 		// for ie6, set width since min-width isn't supported
 		if ($.browser.msie && $.browser.version == 6.0) { $(this).children().css({'width': currentWidest}); }
-		$(this).children().css({'min-width': currentWidest}); 
+		if (!selector) {
+		  $(this).children().css({'min-width': currentWidest}); 
+		} else {
+  		$(this).find(selector).css({'min-width': currentWidest}); 
+		}
 	});
 	return this;
 };
+}(jQuery));
